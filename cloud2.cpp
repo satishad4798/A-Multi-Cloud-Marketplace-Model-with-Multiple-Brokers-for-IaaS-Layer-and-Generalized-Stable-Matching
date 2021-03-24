@@ -153,8 +153,7 @@ std::vector<int> residual_vms_cloud=cloud_supply;
 vector<vector<int>> vm_alloted_to_broker( c_count , vector<int> (b_count, 0));
 
 //allotment of vm to broker by cloud provider in each iteration
-for (int i = 0; i <c_count+b_count; ++i)
-{    
+for (int i = 0; i <c_count+b_count; ++i){    
 	      // saving broker request in each iteration
 	      int no_request=0;
 	      for (int br = 0; br < b_count; ++br){

@@ -111,7 +111,7 @@ int main() {
 
     	cout<<"Broker"<<i+1<<" : ";
     	for (int j = 0; j <b_count; ++j){
-    		cout<<"c"<<broker_preference	[i][j]<<" ";
+    		cout<<"c"<<broker_preference[i][j]<<" ";
     	}
     	cout<<"\n";
     }
