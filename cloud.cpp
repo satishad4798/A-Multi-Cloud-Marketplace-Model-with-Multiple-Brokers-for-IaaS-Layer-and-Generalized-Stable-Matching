@@ -99,52 +99,58 @@ std::vector<int> residual_vms_cloud=cloud_supply;
 
 vector<vector<int>> vm_alloted_to_broker( c_count , vector<int> (b_count, 0));
 
-for (int i = 0; i <c_count; ++i)
+for (int i = 0; i <c_count+5; ++i)
 {
-	      cout<<"\n--------------------------------------------\niteration:"<<i+1<<"\n";
-
+	      
 	      // saving broker request in each iteration
+	      int no_request=0;
 	      for (int br = 0; br < b_count; ++br)
 	      {
 	      	
               if(broker_demand[br]>0)
 	      	{
+	      		no_request++;
 	      		cout<<"\nbroker :"<<br+1<<" demand :"<<broker_demand[br];
 	      	 int cloud_id=broker_preference[br][br_current_pref[br]];
 	      				//cout<<"cloudid:"<<cloud_id+1<<" ";
 	      		        br_current_pref[br]++;
 	      		      	request_list[cloud_id].push_back(br);}
 
-	     }
+	    }
+	    if(no_request==0)
+	    	{
+	    		cout<<"\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********";
+	    		break;}
 
-	
+	cout<<"\n------------------------------------------------\niteration:"<<i+1<<"\n";
+
 //broker_demand=copy_broker_demand;
 		  //sort the request list
 		      for (int i = 0; i < c_count; ++i)
 		      { 
 		      	
-		      	for (int j = 0; j < request_list[i].size(); ++j)
-		      	{
-		      		int max=request_list[i][j]; //broker id
-		      		//cout<<"\nmax:"<<max;
-		      		//int max=0;
-		      		for (int k = j+1; k <request_list[i].size() ; ++k) //error for temp
-		      		{
-		      			if(price_matrix[max][i]<price_matrix[request_list[i][k]][i])
-		      				{
-		      					
-		      					//swap
-		      					request_list[i][j]=request_list[i][k];
+			      	for (int j = 0; j < request_list[i].size(); ++j)
+			      	{
+			      		int max=request_list[i][j]; //broker id
+			      		//cout<<"\nmax:"<<max;
+			      		//int max=0;
+			      		for (int k = j+1; k <request_list[i].size() ; ++k) //error for temp
+			      		{
+			      			if(price_matrix[max][i]<price_matrix[request_list[i][k]][i])
+			      				{
+			      					
+			      					//swap
+			      					request_list[i][j]=request_list[i][k];
 
-		      					//cout<<"\nSatish1:"<<request_list[i][j];
+			      					//cout<<"\nSatish1:"<<request_list[i][j];
 
-		      					request_list[i][k]=max;
-		      				//	cout<<"\nSatish2: "<<request_list[i][k];
-		      					max=request_list[i][j];
+			      					request_list[i][k]=max;
+			      				//	cout<<"\nSatish2: "<<request_list[i][k];
+			      					max=request_list[i][j];
 
-		      				}
-		      		}
-		      	}
+			      				}
+			      		}
+			      	}
 		      	
 		      }
 
@@ -165,18 +171,27 @@ for (int i = 0; i <c_count; ++i)
 		      // broker_demand=copy_broker_demand;(wrong)
 		        for (int i = 0; i < c_count; ++i)
 		      {
+		      			residual_vms_cloud[i]=cloud_supply[i];
 
-                     cout<<"\ncloud "<<i+1<<"allotment\n";
+		      			 //(taking back previous allotment and reassigning again)
+		      			for (int m = 0; m < request_list[i].size(); ++m){
+		      				broker_demand[request_list[i][m]]+=vm_alloted_to_broker[request_list[i][m]][i];
+		      				 vm_alloted_to_broker[request_list[i][m]][i]=0;
+		      			}
+		      			
+
+                     cout<<"\ncloud "<<i+1<<"  allotment\n";
 		      	for (int j = 0; j < request_list[i].size(); ++j)
 		      	{
                           //cout<<"\ninside broker list\n";
-		      		if(residual_vms_cloud[i]>0 and vm_alloted_to_broker[request_list[i][j]][i]==0){
+		      		if(residual_vms_cloud[i]>0 ){
 		      			//cout<<"\ninside if condtion\n";
+
 		      			int demand=broker_demand[request_list[i][j]];
-		      			cout<<"\ndemand:"<<demand<<"\n";
+		      			cout<<"\nB:"<<request_list[i][j]+1<<" demand:"<<demand<<"\n";
 		      			if(demand<residual_vms_cloud[i])
 			      		{
-			      			cout<<"\ninside 222 if condtion\n";
+			      			cout<<"\n remianing request for broker :"<<request_list[i][j]+1<<"0\n";
 			      			
 
 			      			residual_vms_cloud[i]-=demand;
@@ -191,18 +206,16 @@ for (int i = 0; i <c_count; ++i)
 			      		}
 			      		else
 			      		{   //allot only if not alloted
-			      			if(vm_alloted_to_broker[request_list[i][j]][i]==0)
-			      			   
-			      			{
+			      			
 			      				broker_demand[request_list[i][j]]=demand+vm_alloted_to_broker[request_list[i][j]][i]-residual_vms_cloud[i];
 					      						      			vm_alloted_to_broker[request_list[i][j]][i]=residual_vms_cloud[i];
 					      						      			
 					      						      			//cout<<"\nsatish"<<demand-residual_vms_cloud[i];
 					      						      			broker_demand[request_list[i][j]]=demand-residual_vms_cloud[i];
-					      						      			cout<<"\n remianing request for broker : "<<request_list[i][j]+1<<":"<<broker_demand[request_list[i][j]]<<"\n";
+					      						      			cout<<"\n remianing request for broker "<<request_list[i][j]+1<<":"<<broker_demand[request_list[i][j]]<<"\n";
 					      			
-					      						      			residual_vms_cloud[i]=0;}
-			      	           	}
+					      						      			residual_vms_cloud[i]=0;
+			      	    }
 
 		      		}
 		      		else 
