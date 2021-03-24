@@ -1,0 +1,24 @@
+
+4 4
+
+
+10 20 32 38
+
+35 30 23 12
+
+
+5 10 7 5
+3 13 8 7 
+7 12 9 9 
+8 15 5 8
+
+//input format
+
+no_brokers,no_cloud
+
+cloud_supply array
+
+broker_demand array
+
+price_matrix (rows are brokers columns are clouds)
+-each index corresponds to price offered to broker

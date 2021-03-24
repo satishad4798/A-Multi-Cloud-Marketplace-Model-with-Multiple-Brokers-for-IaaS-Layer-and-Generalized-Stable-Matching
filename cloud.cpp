@@ -9,6 +9,25 @@ using namespace std;
 // }
 
 // try
+void  show_vm_allotments(vector<vector<int>> vm_alloted_to_broker,int c_count,int b_count,vector<int> broker_demand)
+{
+	   cout<<"        ";
+					  for (int i = 0; i < c_count; ++i)
+					  {
+					  	cout<<"|Cloud "<<i+1<<"    ";
+					  }
+					  cout<<"\n";
+					    for (int i = 0; i < c_count; ++i)
+					    {
+					    	cout<<"Broker "<<i+1<<" |";
+					    	for (int j = 0; j <b_count; ++j)
+					    	{
+					    		cout<<"    "<<vm_alloted_to_broker[i][j]<<"      |";
+					    		
+					    	}
+					    	cout<<"\n";
+					    }  
+}
 int main() {
     
 
@@ -18,10 +37,19 @@ int main() {
     cloud_supply={10,20,32,38};
     broker_demand={35,30,23,12};
 
+    vector<vector<int>> price_matrix{{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8}};
+
+   //test 2
+
+    // cloud_supply={10,20};
+    // broker_demand={20,10};
+
+    // vector<vector<int>> price_matrix{{40,80},{20,100}};
+
     int c_count=cloud_supply.size();
     int b_count=broker_demand.size();
 
-    vector<vector<int>> price_matrix{{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8}};
+    
 
 
    
@@ -119,7 +147,9 @@ for (int i = 0; i <c_count+5; ++i)
 	    }
 	    if(no_request==0)
 	    	{
-	    		cout<<"\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********";
+	    		cout<<"\n\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********\n\nfinal allotment\n";
+
+	    		show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
 	    		break;}
 
 	cout<<"\n------------------------------------------------\niteration:"<<i+1<<"\n";
@@ -228,93 +258,14 @@ for (int i = 0; i <c_count+5; ++i)
 		      	}
 		      	
 		      }
-
-		    cout<<"\n vms alloted in "<<i+1<<" :iteration\n\n         ";
-
-					  for (int i = 0; i < c_count; ++i)
-					  {
-					  	cout<<"|Cloud "<<i+1<<"    ";
-					  }
-					  cout<<"\n";
-					    for (int i = 0; i < c_count; ++i)
-					    {
-					    	cout<<"Broker "<<i+1<<" |";
-					    	for (int j = 0; j <b_count; ++j)
-					    	{
-					    		cout<<"    "<<vm_alloted_to_broker[i][j]<<"      |";
-					    		
-					    	}
-					    	cout<<"\n";
-					    }  
-
-
-				cout<<"broker demand after "<<i<<" iteration:\n";
+		     cout<<"\n vms alloted in "<<i+1<<" :iteration\n\n";
+		    show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
+		    cout<<"Broker demand after "<<i<<" allotment:\n";
 				for (int i = 0; i < b_count; ++i){
 					cout<<"  B"<<i+1<<":"<<broker_demand[i];
 				}
 
-
-		// for (int br = 0; br < b_count; ++br)
-		//     {
-
-		//     	// // broker i making request his jth preference
-		//     	// cout<<[broker_preference[b_count]];
-		    	
-		//     	 int cloud_id=broker_preference[br][br_current_pref[br]];
-		//     	 //cout<<cloud_id_request;
-		//     	 cout<<"\n\nbroker:"<<br+1<<" requesting:"<<cloud_id+1;
-		//     	// cout<<cloud_id_request;
-		//     	if(broker_demand[br]>0)
-		//     	{
-		//     		// direct allotment ,no need for override existing allotment
-		//     		if(broker_demand[br]<=residual_vms_cloud[cloud_id] or residual_vms_cloud[cloud_id]==cloud_supply[cloud_id] )  
-		//     		{
-		//     			 residual_vms_cloud[cloud_id]-=broker_demand[br];
-		//     			cout<<"\nallotemt to broker:"<<br+1<<"by cloud :"<<cloud_id+1;
-		//     			br_current_pref[br]++;
-		//     			broker_demand[br]-=residual_vms_cloud[cloud_id];
-		//     			allotment[cloud_id].push_back(br+1);
-
-		//     		}
-		//     		else //override the allotment
-		//     		{
-
-		//     			residual_vms_cloud[cloud_id]=0;
-		//     			cout<<"\nallotemt to broker:"<<br+1<<"by cloud :"<<broker_preference[br][b_count]+1;
-		//     			broker_demand[br]=broker_demand[br]-residual_vms_cloud[cloud_id];
-		//     			b_count++;
-
-		//     		}
-		//     	}
-		    		
-
-		//     }
-		   
-
-			
-
 }
-
-cout<<"\n";
-for(int i=0;i<c_count;i++){
-	for(int j=0;j<c_count;j++){
-		cout<<cloud_preference[i][j]<<" ";
-	}
-	cout<<"\n";
-
-}
-		  
-// for (int i = 0; i < c_count; ++i)
-// 		    {
-// 		    	for (int j = 0; j < b_count; ++j)
-// 		    	{
-// 		    		/* code */
-
-// 		    	}
-// 		    	/* code */
-// 		    }		    
-    
-
 
     return 0;
 }
