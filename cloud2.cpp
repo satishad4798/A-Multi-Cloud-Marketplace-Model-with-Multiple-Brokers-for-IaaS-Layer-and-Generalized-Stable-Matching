@@ -130,8 +130,6 @@ int main() {
 
 	std::vector<int> br_current_pref(b_count,0);
 
-	vector<std::vector<int>> cloud_preference{{4,3,2,1},{4,2,3,1},{3,2,1,4},{3,4,2,1}};
-
 	std::vector<int> residual_vms_cloud=cloud_supply;
 	vector<vector<int>> request_list(c_count);
 

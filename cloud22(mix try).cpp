@@ -35,6 +35,7 @@ int main() {
     in>>c_count;
     
     vector<vector<float>> price_matrix(b_count);
+    vector<vector<float>> transpose_price_matrix(c_count);
 
    
     for (int i = 0; i <c_count; ++i){
@@ -56,6 +57,22 @@ int main() {
     in.close();
 
     //''''''''''read input from file ends
+
+    //just for print statement ignore
+    int choice;
+    string requester;
+    char not_requester='B';
+    cout<<"who is requester:\n 1.broker \n2.cloud";
+    cin>>choice;
+    if(choice==1){
+    	requester="Broker";
+    	not_requester='C';
+    }
+    	 
+    else
+    	 requester="Cloud";
+    //just for print statement ends
+   
 
 	std::vector<int> copy_broker_demand=broker_demand;
 	cout<<"price offered by cloud to brokers:\n\n         ";
@@ -96,7 +113,12 @@ int main() {
 	vector<std::vector<float>> broker_preference;
 	broker_preference=price_matrix;
 	vector<std::vector<float>> c_price_matrix=price_matrix;
-	   
+	 
+	//trasnpose matrix 
+	// for (int i = 0; i < b_count; ++i)
+ //      for (int j = 0; j < c_count; ++j) {
+ //         transpose_price_matrix[j][i] = price_matrix[i][j];
+ //      }  
 
 	//creating broker preferencr list    
 	for (int i = 0; i <b_count; ++i){
@@ -118,12 +140,12 @@ int main() {
 	}
 
 	// prining broker preference
-	cout<<"\nbroker preference based on price\n";
+	cout<<"\n"<<requester<<" preference based on price\n";
 
 	for (int i = 0; i < c_count; ++i){
-		    	cout<<"Broker"<<i+1<<" : ";
+		    	cout<<requester<<i+1<<" : ";
 		    	for (int j = 0; j <b_count; ++j){
-		    		cout<<"c"<<broker_preference	[i][j]<<" ";
+		    		cout<<not_requester<<broker_preference	[i][j]<<" ";
 		    	}
 		    	cout<<"\n";
 	}
