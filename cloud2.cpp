@@ -9,9 +9,9 @@ void  show_vm_allotments(vector<vector<int>> vm_alloted_to_broker,int c_count,in
 	  	cout<<"|Cloud "<<i+1<<"    ";
 	  }
 	  cout<<"\n";
-	    for (int i = 0; i < c_count; ++i){
+	    for (int i = 0; i < b_count; ++i){
 	    	cout<<"Broker "<<i+1<<" |";
-	    	for (int j = 0; j <b_count; ++j){
+	    	for (int j = 0; j <c_count; ++j){
 	    		cout<<"    "<<vm_alloted_to_broker[i][j]<<"      |";
 	    		
 	    	}
@@ -66,17 +66,17 @@ int main() {
 	}
 	cout<<"\n";
 
-	for (int i = 0; i < c_count; ++i){
+	for (int i = 0; i < b_count; ++i){
 			    	cout<<"Broker "<<i<<" |";
-			    	for (int j = 0; j <b_count; ++j)
+			    	for (int j = 0; j <c_count; ++j)
 			    	{
-			    		cout<<"    "<<price_matrix	[i][j]<<"      |";
+			    		cout<<"    "<<price_matrix[i][j]<<"      |";
 			    		
 			    	}
 			    	cout<<"\n";
 	}
 
-	std::vector<int> broker_max_price{8,12,15,7};
+	std::vector<int> broker_max_price{8,12,15,7,23};
 
 	cout<<"\n\nMax price at which broker can buy:\n";
 	    for (int i = 0; i < b_count; ++i) {
@@ -89,8 +89,8 @@ int main() {
 		}
 
 	cout<<"\ncloud supply::\n";
-	    for (int i = 0; i < b_count; ++i) {
-	    	cout<<"Broker "<<i+1<<" :"<<cloud_supply[i]<<"\n";
+	    for (int i = 0; i < c_count; ++i) {
+	    	cout<<"cloud "<<i+1<<" :"<<cloud_supply[i]<<"\n";
 	    }
 	    
 	vector<std::vector<float>> broker_preference;
@@ -120,10 +120,10 @@ int main() {
 	// prining broker preference
 	cout<<"\nbroker preference based on price\n";
 
-	for (int i = 0; i < c_count; ++i){
+	for (int i = 0; i < b_count; ++i){
 		    	cout<<"Broker"<<i+1<<" : ";
-		    	for (int j = 0; j <b_count; ++j){
-		    		cout<<"c"<<broker_preference	[i][j]<<" ";
+		    	for (int j = 0; j <c_count; ++j){
+		    		cout<<"c"<<broker_preference[i][j]<<" ";
 		    	}
 		    	cout<<"\n";
 	}
@@ -131,10 +131,10 @@ int main() {
 	std::vector<int> br_current_pref(b_count,0);
 
 	std::vector<int> residual_vms_cloud=cloud_supply;
-	vector<vector<int>> request_list(c_count);
+	vector<vector<int>> request_list(b_count);
 
 
-	vector<vector<int>> vm_alloted_to_broker( c_count , vector<int> (b_count, 0));
+	vector<vector<int>> vm_alloted_to_broker( b_count , vector<int> (c_count, 0));
 
 	//allotment of vm to broker by cloud provider in each iteration
 	for(int i = 0; i <c_count+b_count; ++i){    
@@ -179,7 +179,7 @@ int main() {
 			      }
 		      }   	
 		  }
-
+ cout<<"test"<<c_count;
 		  cout<<"\n\nRequest list sorted as per cloud preference:\n ";
 
 		      for (int i = 0; i < c_count; ++i){ 

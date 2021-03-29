@@ -10,10 +10,10 @@ import java.util.*;
 					  	 System.out.print("|Cloud "+(i+1)+"    ");
 					  }
 					   System.out.print("\n");
-					    for (int i = 0; i < c_count; ++i)
+					    for (int i = 0; i < b_count; ++i)
 					    {
 					    	 System.out.print("Broker "+(i+1)+" |");
-					    	for (int j = 0; j <b_count; ++j)
+					    	for (int j = 0; j <c_count; ++j)
 					    	{
 					    		 System.out.print("    "+vm_alloted_to_broker[i][j]+"      |");
 					    		
@@ -29,13 +29,13 @@ import java.util.*;
 
             // std::vector<int> cloud_supply;
             // std::vector<int> broker_demand;
-            int[] broker_demand ={35,30,23,12};
-            int[] cloud_supply = {10,20,32,38};
+            int[] broker_demand ={35,30,23,12,10};
+            int[] cloud_supply = {20,20,32,38};
             // cloud_supply={10,20,32,38};
             // broker_demand={35,30,23,12};
 
             // vector<vector<int>> price_matrix{{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8}};
-            int[][] price_matrix = {{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8}};
+            int[][] price_matrix = {{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8},{6,12,10,10}};
         
 
                 
@@ -48,9 +48,9 @@ import java.util.*;
                 System.out.print("|Cloud "+(i+1)+"    ");
             }
             System.out.print("\n");
-            for (int i = 0; i < c_count; ++i){
+            for (int i = 0; i < b_count; ++i){
                     System.out.print("Broker "+i+" |");
-                    for (int j = 0; j <b_count; ++j)
+                    for (int j = 0; j <c_count; ++j)
                     {
                         System.out.print("    "+price_matrix[i][j]+"      |");
                         
@@ -60,7 +60,7 @@ import java.util.*;
 
                 //break1
 
-            int[] broker_max_price={8,12,15,7};
+            int[] broker_max_price={8,12,15,7,10};
 
             System.out.print("\n\nMax price at which broker can buy:\n");
             for (int i = 0; i < b_count; ++i) {
@@ -75,7 +75,7 @@ import java.util.*;
 
            System.out.print("\ncloud supply::\n");
 
-                for (int i = 0; i < b_count; ++i) {
+                for (int i = 0; i < c_count; ++i) {
                     System.out.print("cloud "+(i+1)+" :"+cloud_supply[i]+"\n");
                 }
             
@@ -112,10 +112,10 @@ import java.util.*;
 
             // prining broker preference
                 System.out.print("\nbroker preference based on price\n");
-            for (int i = 0; i < c_count; ++i){
+            for (int i = 0; i < b_count; ++i){
 
                     System.out.print("Broker"+(i+1)+" : ");
-                for (int j = 0; j <b_count; ++j){
+                for (int j = 0; j <c_count; ++j){
                         System.out.print("c"+(broker_preference[i][j]+1)+" ");
                 }
                     System.out.print("\n");
