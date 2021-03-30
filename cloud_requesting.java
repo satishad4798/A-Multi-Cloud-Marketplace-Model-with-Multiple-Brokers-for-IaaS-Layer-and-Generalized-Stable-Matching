@@ -369,14 +369,10 @@
                             }
                     
                             System.out.print("\n------------------------------------------------\niteration:"+(y+1)+"\n");
-                    
-                          
                             //sort the request list
                             for (int ii = 0; ii < c_count; ++ii){      
                                     for (int j = 0; j < request_list.get(ii).size() ; ++j){
                                         int min=request_list.get(ii).get(j); //broker id
-                                        // System.out.print+"\nmax:"+min;
-                                        //int min=0;
                                         for (int k = j+1; k <request_list.get(ii).size();  ++k){
                                             if(transpose_price_matrix[min][ii]>transpose_price_matrix[request_list.get(ii).get(k)][ii]){
                                                     
@@ -415,43 +411,30 @@
                             {
                             //     System.out.print("\nsupply:\n"+pending_demand_br[i]);
                                 if(pending_demand_br[i]>0 ){
-                                //  System.out.print("\ninside if condtion\n");
-
+                            
                                     int supply=cloud_supply[request_list.get(i).get(j)];
                                     //  System.out.print("\nB:"+(request_list.get(i).get(j)+1)+" supply:"+supply+"\n");
-                                    if(supply<pending_demand_br[i])
-                                    {
-                                        //   System.out.print("\n remianing request for broker :"+(request_list.get(i).get(j)+1)+"0\n");
-                                        
-
+                                    if(supply<pending_demand_br[i]){
                                         pending_demand_br[i]-=supply;
-                                        //System.out.print+"\nresidual_vms_cloud[i]"+pending_demand_br[i];
-
-                                        // update cloud demand if vm was rejected by broker  (if doubt ask)
-                                        
-                                        // broker_demand[request_list.get(i).get(j)]=supply+vm_alloted_to_broker[request_list.get(i).get(j)][i]-present_allotment;   //previous allotment and present allotment
-                                        cloud_supply[request_list.get(i).get(j)]=0;
+                                       cloud_supply[request_list.get(i).get(j)]=0;
 
                                         // vm_alloted_to_broker[request_list.get(i).get(i)][j]=vm_alloted_to_broker[request_list.get(i).get(i)][j]+supply;
                                         vm_alloted_to_broker[i][request_list.get(i).get(j)]=supply;
                                     }
 
                                     else{  
-                                          vm_alloted_to_broker[i][request_list.get(i).get(j)]=pending_demand_br[i];
-                                            
+                                          vm_alloted_to_broker[i][request_list.get(i).get(j)]=pending_demand_br[i];  
                                             // System.out.print+"\nsatish"+supply-pending_demand_br[i];
                                             cloud_supply[request_list.get(i).get(j)]=supply-pending_demand_br[i];
-                                        //  System.out.print("\n remianing request for broker "+request_list.get(i).get(j)+1+":"+broker_demand[request_list.get(i).get(j)]+"\n");
                                             pending_demand_br[i]=0;
                                     }
 
                                 }
                                 else{
-
                                         request_list.get(i).size();
                                         request_list.get(i).remove(j); //if error comment this @47
                                         break;
-                                    }
+                                }
                             }
                             
                         }
