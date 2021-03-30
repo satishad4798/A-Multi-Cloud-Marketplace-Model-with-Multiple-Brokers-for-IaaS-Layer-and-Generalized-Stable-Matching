@@ -68,7 +68,7 @@ int main() {
 	cout<<"\n";
 
 	for (int i = 0; i < b_count; ++i){
-			    	cout<<"Broker "<<i<<" |";
+			    	cout<<"Broker "<<i+1<<" |";
 			    	for (int j = 0; j <c_count; ++j)
 			    	{
 			    		cout<<"    "<<price_matrix[i][j]<<"      |";
@@ -447,7 +447,7 @@ int main() {
       		int index = itr -broker_preference[i].begin();
       		
       		int l=index+1;    //cloud rank in broker prefrence
-      		 // cout<<"\nutility"<<(c_count-l+1);
+      		  cout<<"\nu"<<(c_count-l+1);
       		cout<<"  util:"<<(c_count-l+1)*vm_alloted_to_broker[i][j];
       		broker_utility[i]+=(c_count-l+1)*vm_alloted_to_broker[i][j];
 
@@ -468,7 +468,7 @@ int main() {
       		int index = itr -cloud_preference[i].begin();
       		//cout<<j+1<<" broker "<<index+1<<" \n";
       		int l=index+1;    //cloud rank in broker prefrence
-      		// cout<<"\nutility"<<(c_count-l+1);
+      		 cout<<"\nu"<<(c_count-l+1);
       		cout<<"  uti:"<<(b_count-l+1)*vm_alloted_to_broker[j][i];
       		cloud_utility[i]+=(b_count-l+1)*vm_alloted_to_broker[j][i];
 
@@ -477,15 +477,22 @@ int main() {
       	/* code */
       }
 
-cout<<"broker utility\n";
+if(choice2==1)
+ cout<<"  Utility when BROKER made request\n"; 
+else
+ cout<<"  Utility when CLOUD made request\n"; 	
+
+cout<<"\n  Broker Utility\n";
+cout<<"---------------------\n";	
       for (int i = 0; i < b_count; ++i)
       {
-      	cout<<"B"<<i+1<<":"<<broker_utility[i]<<"\n";
+      	cout<<"  Broker "<<i+1<<" : "<<broker_utility[i]<<"\n";
       }
-cout<<"cloud utility\n" ;     
+cout<<"\n  Cloud  Utility\n" ;   
+cout<<"---------------------\n";  
       for (int i = 0; i < b_count; ++i)
       {
-      	cout<<"C"<<i+1<<":"<<cloud_utility[i]<<"\n";
+      	cout<<"  Cloud "<<i+1<<" : "<<cloud_utility[i]<<"\n";
       }
 
       //utility calcution for broker

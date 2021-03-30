@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.List;
 
     class Simple{  
 
@@ -540,5 +541,62 @@ import java.util.*;
                         }
                 }    
             }    
+                 //utility calcution for cloud
+
+            //using broker prederence and vm allotment
+            int [] broker_utility=new int[b_count];
+            int index=0;
+            System.out.print("\n");
+            for (int i = 0; i < b_count; ++i)
+            {
+                System.out.print((i+1)+"broker\n");
+                for (int j = 0; j < c_count; ++j)
+                {
+                   
+                    for (int k = 0; k <b_count; k++)
+                    if (broker_preference[i][k] == j)
+                       { index=k;break;}
+                        System.out.print("  u:"+(c_count-index));     
+                    System.out.print("  util:"+(c_count-index)*vm_alloted_to_broker[i][j]);
+                    broker_utility[i]+=(c_count-index)*vm_alloted_to_broker[i][j];
+        
+                }
+                System.out.print("\n");
+                /* code */
+                }
+        
+            int [] cloud_utility=new int[c_count];
+           
+            System.out.print("\n");
+            for (int i = 0; i < c_count; ++i)
+            {
+                System.out.print("cloud\n");
+                for (int j = 0; j < b_count; ++j)
+                {
+                    for (int k = 0; k <b_count; k++)
+                    if (cloud_preference[i][k] == j)
+                       { index=k;break;}
+    
+                        System.out.print("  u:"+(b_count-index+2));   
+                    System.out.print(" uti:"+(b_count-index+2)*vm_alloted_to_broker[j][i]);
+                    cloud_utility[i]+=(b_count-index)*vm_alloted_to_broker[j][i];
+        
+                }
+                System.out.print("\n");
+                /* code */
+            }
+        
+            System.out.print("broker utility\n");
+            for (int i = 0; i < b_count; ++i)
+            {
+                System.out.print("B"+(i+1)+":"+broker_utility[i]+"\n");
+            }
+            System.out.print("cloud utility\n") ;     
+            for (int i = 0; i < b_count; ++i)
+            {
+                System.out.print("C"+(i+1)+":"+cloud_utility[i]+"\n");
+            }
+        
+            //utility calcution for broker    
         }                         
     }  
