@@ -35,19 +35,21 @@ import java.util.List;
             Scanner sc= new Scanner(System.in); //System.in is a standard input stream.
            System.out.println("1.default valus 2.manual inputs");
            int choice= sc.nextInt();
+         
                 if(choice==1){
                     
-                    broker_demand=new int[]{35,30,23,12};
-                    cloud_supply=new int[] {10,20,32,38};
+                    broker_demand=new int[]{35,30,23,12,12};
+                    cloud_supply=new int[] {10,20,32,12};
                     price_matrix =new int[][] {{5,10,7,5},{3,13,8,7},{7,12,9,9},{8,15,5,8},{6,12,10,10}};
-                   
+                   // price_matrix =new int[][] {{5,10,7},{3,13,8},{7,12,9},{8,15,5}};
                 }
                 else{
                     
                    
                     System.out.println("no of broker,no of cloud \n hint:copy paste input.txt"); 
-                    b_count= sc.nextInt();
+                   
                     c_count= sc.nextInt();
+                    b_count= sc.nextInt();
                     broker_demand=new int[b_count];
                     cloud_supply=new int[c_count];
                     price_matrix=new int[b_count][c_count];
@@ -114,17 +116,17 @@ import java.util.List;
                 }
             
                 int[][] cloud_preference=new int[c_count][b_count];
-                int[][] c_price_matrix=new int[c_count][b_count];
-
+                int[][] c_transpose=new int[c_count][b_count];
+               
+ 
                 for (int i = 0; i < c_count; ++i) {
                     for(int j=0;j<b_count;j++){
                         cloud_preference[i][j]=transpose_price_matrix[i][j];
-                        c_price_matrix[i][j]=transpose_price_matrix[i][j];
-                    }}
-
-
-               
-                
+                        c_transpose[i][j]=transpose_price_matrix[i][j];
+                        
+                    } 
+                }
+  
                 //creating cloud preferencr list 
                 
                 for (int i = 0; i <c_count; ++i)
@@ -136,19 +138,24 @@ import java.util.List;
                         cloud_preference[i][xx] = cloud_preference[i][b_count - xx - 1];
                         cloud_preference[i][b_count - xx - 1] = t;
                     }
-                    for (int j = 0; j < c_count; ++j)
+
+                    for (int m = 0; m < c_count; ++m) {
+                        for(int j=0;j<b_count;j++){
+                            System.out.print(cloud_preference[m][j]+" ");
+                        }System.out.print("\n");}
+
+                    for (int j = 0; j < b_count; ++j)
                     {
-                        for (int k = 0; k < c_count; ++k)
+                        for (int k = 0; k < b_count; ++k)
                         {
-                            if(cloud_preference[i][j]==c_price_matrix[i][k])
+                            if(cloud_preference[i][j]==c_transpose[i][k])
                                 {
                                     cloud_preference[i][j]=k;
-                                       c_price_matrix[i][k]=0;
+                                       c_transpose[i][k]=0;
                                        break;
                                    }
                         }
-                    }
-            
+                    }  
                 }
 
             // prining broker preference
@@ -165,8 +172,9 @@ import java.util.List;
            
                   // broker preferencr list
                   int[][] broker_preference=new int[b_count][c_count];
-                  for (int i = 0; i < c_count; ++i) {
-                    for(int j=0;j<b_count;j++){
+                  int[][] c_price_matrix=new int[b_count][c_count];
+                  for (int i = 0; i < b_count; ++i) { //47
+                    for(int j=0;j<c_count;j++){ //47
                         broker_preference[i][j]=price_matrix[i][j];
                         c_price_matrix[i][j]=price_matrix[i][j];
                     }}
@@ -175,9 +183,9 @@ import java.util.List;
                       /* code */
                       Arrays.sort(broker_preference[i]);
                      
-                    for (int j = 0; j < c_count; ++j)
+                    for (int j = 0; j < c_count; ++j)//47
                       {
-                          for (int k = 0; k < c_count; ++k)
+                          for (int k = 0; k < c_count; ++k)//47
                           {
                               if(broker_preference[i][j]==c_price_matrix[i][k])
                                   {
@@ -203,7 +211,7 @@ import java.util.List;
               
             
            
-            int[][] vm_alloted_to_broker=new int[c_count][b_count];
+            int[][] vm_alloted_to_broker=new int[b_count][c_count];
             
             System.out.println("1.broker proposing the request 2.cloud proposing the request");
             int choice2= sc.nextInt();
@@ -218,9 +226,9 @@ import java.util.List;
                 residual_vms_cloud[x]=cloud_supply[x];
     
     
-                //vector<vector<int>> request_list(c_count);
-              //  ArrayList<Integer> request_list = new ArrayList<>(c_count);
-                ArrayList<ArrayList<Integer> > request_list = new ArrayList<ArrayList<Integer> >(c_count);
+            
+             
+                ArrayList<ArrayList<Integer> > request_list = new ArrayList<ArrayList<Integer> >(c_count); //47
                 //int[][] vm_alloted_to_broker=new int[b_count][c_count];
                 
                 for (int y = 0; y <(c_count+b_count); ++y){
@@ -235,12 +243,15 @@ import java.util.List;
                        {
                            no_request++;
                           // System.out.print("\nbroker :"+(br+1) +" demand :"+broker_demand[br]);
+                           
                            int cloud_id=broker_preference[br][br_current_pref[br]];
-                           // System.out.print+"cloudid:"+cloud_id+1+" ";
+                          
+                         System.out.print("cloudid: "+cloud_id+1+"\n");
                            br_current_pref[br]++;
                            if(br_current_pref[br]>c_count-1)
                            br_current_pref[br]=c_count-1;
                            // request_list.get(0).add(0,12);
+                           if(cloud_id<c_count) //47
                            request_list.get(cloud_id).add(br);
                        }
 
@@ -256,7 +267,7 @@ import java.util.List;
            
                    //broker_demand=copy_broker_demand;
                    //sort the request list
-                   for (int ii = 0; ii < c_count; ++ii){      
+                   for (int ii = 0; ii < c_count; ++ii){   //47     final as cloud saves 
                            for (int j = 0; j < request_list.get(ii).size() ; ++j){
                                int max=request_list.get(ii).get(j); //broker id
                                // System.out.print+"\nmax:"+max;
@@ -281,7 +292,7 @@ import java.util.List;
            
                    System.out.print("\n\nRequest list sorted as per cloud preference:\n ");
            
-                   for (int x = 0; x < c_count; ++x){  System.out.print("\ncloud "+(x+1)+": ");
+                   for (int x = 0; x < b_count; ++x){  System.out.print("\ncloud "+(x+1)+": "); //47
                            for (int j = 0; j < request_list.get(x).size(); ++j)
                            {
                                System.out.print("B"+(request_list.get(x).get(j)+1)+" ");
@@ -292,16 +303,16 @@ import java.util.List;
 
                   
                  
-                   for (int i = 0; i < c_count; ++i){
+                   for (int i = 0; i < c_count; ++i){ //47 final i guess
                        
                       
                        residual_vms_cloud[i]=cloud_supply[i];
                        //System.out.print("\nsupply:\n"+cloud_supply[i]);
 
                            //(taking back previous allotment and reassigning again)
-                           for (int m = 0; m < request_list.get(i).size(); ++m){
-                               broker_demand[request_list.get(i).get(m)]+=vm_alloted_to_broker[request_list.get(i).get(m)][i];
-                               vm_alloted_to_broker[request_list.get(i).get(m)][i]=0;
+                           for (int m = 0; m < request_list.get(i).size(); ++m){ //47
+                              broker_demand[request_list.get(i).get(m)]+=vm_alloted_to_broker[request_list.get(i).get(m)][i];
+                              vm_alloted_to_broker[request_list.get(i).get(m)][i]=0;
                            }
                            
 
@@ -357,7 +368,7 @@ import java.util.List;
                    }
 
                    System.out.print("\n vms alloted in "+(y+1)+" :iteration\n\n");
-                  show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
+                 // show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand); //47
                  
 
                   System.out.print("Broker demand after "+y+" allotment:\n");
@@ -381,8 +392,7 @@ import java.util.List;
                 pending_demand_br[x]=broker_demand[x];
     
     
-                //vector<vector<int>> request_list(c_count);
-              //  ArrayList<Integer> request_list = new ArrayList<>(c_count);
+               
                 ArrayList<ArrayList<Integer> > request_list = new ArrayList<ArrayList<Integer> >(b_count);
                
 
@@ -395,7 +405,7 @@ import java.util.List;
                             all_Demand+=pending_demand_br[x];
                         }    
                         // saving broker request in each iteration
-                        for (int cl = 0; cl < c_count; ++cl)
+                        for (int br = 0; br < b_count; ++br)
                         {
                             request_list.add(new ArrayList<Integer>());
                         }
@@ -407,11 +417,12 @@ import java.util.List;
                             {
                                 no_request++;
                                 int broker_id=cloud_preference[cl][cloud_current_pref[cl]];
-                                // System.out.print+"cloudid:"+broker_id+1+" ";
+                                 System.out.print("cloudid:"+(broker_id+1)+"\n ");
                                 cloud_current_pref[cl]++;
-                                if(cloud_current_pref[cl]>c_count-1)
-                                cloud_current_pref[cl]=c_count-1;
+                                if(cloud_current_pref[cl]>b_count-1)
+                                cloud_current_pref[cl]=b_count-1;
                                 // request_list.get(0).add(0,12);
+                               
                             request_list.get(broker_id).add(cl);
                             }
 
@@ -419,7 +430,7 @@ import java.util.List;
                         if(all_Demand==0 || no_request==0 ){
                                 System.out.print("\n\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********\n\nfinal allotment\n");
                 
-                                show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
+                               // show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
                                 break;
                         }
                 
@@ -452,7 +463,7 @@ import java.util.List;
                 
                         System.out.print("\n\nRequest list sorted as per borker preference:\n ");
                 
-                        for (int x = 0; x < b_count; ++x){  
+                        for (int x = 0; x < c_count; ++x){   //47 dept om other
                             System.out.print("\nBroker "+(x+1)+": ");
                                 for (int j = 0; j < request_list.get(x).size(); ++j)
                                 {
@@ -531,7 +542,7 @@ import java.util.List;
                         }
 
                         System.out.print("\n vms alloted in "+(y+1)+" :iteration\n\n");
-                    show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
+                   // show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand); //47
                     
 
                     System.out.print("Broker demand after "+y+" allotment:\n");
@@ -541,7 +552,7 @@ import java.util.List;
                         }
                 }    
             }    
-                 //utility calcution for cloud
+                 //utility calcution for broker
 
             //using broker prederence and vm allotment
             int [] broker_utility=new int[b_count];
@@ -550,10 +561,10 @@ import java.util.List;
             for (int i = 0; i < b_count; ++i)
             {
                 System.out.print((i+1)+"broker\n");
-                for (int j = 0; j < c_count; ++j)
+                for (int j = 0; j < c_count; ++j) //47
                 {
                    
-                    for (int k = 0; k <b_count; k++)
+                    for (int k = 0; k <c_count; k++)
                     if (broker_preference[i][k] == j)
                        { index=k;break;}
                         System.out.print("  u:"+(c_count-index));     
@@ -562,13 +573,13 @@ import java.util.List;
         
                 }
                 System.out.print("\n");
-                /* code */
-                }
+                
+            }
         
             int [] cloud_utility=new int[c_count];
            
             System.out.print("\n");
-            for (int i = 0; i < c_count; ++i)
+            for (int i = 0; i < c_count; ++i) //47
             {
                 System.out.print("cloud\n");
                 for (int j = 0; j < b_count; ++j)
@@ -583,7 +594,6 @@ import java.util.List;
         
                 }
                 System.out.print("\n");
-                /* code */
             }
         
             System.out.print("broker utility\n");
@@ -592,7 +602,7 @@ import java.util.List;
                 System.out.print("B"+(i+1)+":"+broker_utility[i]+"\n");
             }
             System.out.print("cloud utility\n") ;     
-            for (int i = 0; i < b_count; ++i)
+            for (int i = 0; i < c_count; ++i) 
             {
                 System.out.print("C"+(i+1)+":"+cloud_utility[i]+"\n");
             }
