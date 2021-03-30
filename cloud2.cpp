@@ -428,10 +428,6 @@ int main() {
 
     }
 
-	
-
-
-
 	//utility calcution for cloud
 
 	//using broker prederence and vm allotment
@@ -440,15 +436,14 @@ int main() {
    cout<<"\n";
       for (int i = 0; i < b_count; ++i)
       {
-      	cout<<i+1<<" broker\n";
+      //	cout<<i+1<<" broker\n";
       	for (int j = 0; j < c_count; ++j)
       	{
       		auto itr = find(broker_preference[i].begin(),broker_preference[i].end() , j);
       		int index = itr -broker_preference[i].begin();
       		
       		int l=index+1;    //cloud rank in broker prefrence
-      		  cout<<"\nu"<<(c_count-l+1);
-      		cout<<"  util:"<<(c_count-l+1)*vm_alloted_to_broker[i][j];
+      		
       		broker_utility[i]+=(c_count-l+1)*vm_alloted_to_broker[i][j];
 
       	}
@@ -461,15 +456,13 @@ int main() {
    cout<<"\n";
       for (int i = 0; i < c_count; ++i)
       {
-      		cout<<i+1<<" cloud \n";
+      	//	cout<<i+1<<" cloud \n";
       	for (int j = 0; j < b_count; ++j)
       	{
       		auto itr = find(cloud_preference[i].begin(),cloud_preference[i].end() , j);
       		int index = itr -cloud_preference[i].begin();
       		//cout<<j+1<<" broker "<<index+1<<" \n";
       		int l=index+1;    //cloud rank in broker prefrence
-      		 cout<<"\nu"<<(c_count-l+1);
-      		cout<<"  uti:"<<(b_count-l+1)*vm_alloted_to_broker[j][i];
       		cloud_utility[i]+=(b_count-l+1)*vm_alloted_to_broker[j][i];
 
       	}
