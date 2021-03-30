@@ -95,7 +95,7 @@ import java.util.*;
                     /* code */
                     Arrays.sort(broker_preference[i]);
                    
-                    for (int j = 0; j < c_count; ++j)
+                  for (int j = 0; j < c_count; ++j)
                     {
                         for (int k = 0; k < c_count; ++k)
                         {
@@ -150,8 +150,8 @@ import java.util.*;
                             int cloud_id=broker_preference[br][br_current_pref[br]];
                             // System.out.print+"cloudid:"+cloud_id+1+" ";
                             br_current_pref[br]++;
-                            if(br_current_pref[br]>c_count-1)
-                            br_current_pref[br]=c_count-1;
+                            // if(br_current_pref[br]>c_count-1)
+                            // br_current_pref[br]=c_count-1;
                             // request_list.get(0).add(0,12);
                             request_list.get(cloud_id).add(br);
                         }
@@ -280,6 +280,6 @@ import java.util.*;
 
             }                    
 
-                System.out.print("Hello Java");  
-                }  
+        System.out.print("Hello Java");  
+        }  
     }  

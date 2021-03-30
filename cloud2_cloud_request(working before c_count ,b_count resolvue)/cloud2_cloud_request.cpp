@@ -1,21 +1,19 @@
 
 #include <bits/stdc++.h>
-#include <iomanip>
 using namespace std;
 
 
 void  show_vm_allotments(vector<vector<int>> vm_alloted_to_broker,int c_count,int b_count,vector<int> broker_demand){
 	  cout<<"          ";
 	  for (int i = 0; i < c_count; ++i){
-	  	cout<<"--Cloud "<<i+1<<"";
+	  	cout<<"|Cloud "<<i+1<<"    ";
 	  }
 	  cout<<"\n";
-	  for (int i = 0; i < b_count; ++i){
+	  for (int i = 0; i < c_count; ++i){
 	    	cout<<"Broker "<<i+1<<" |";
-	    	for (int j = 0; j <c_count; ++j){
-	    		std::cout << std::setw(8);
-			    	cout<<vm_alloted_to_broker[i][j];
-	    		}
+	    	for (int j = 0; j <b_count; ++j){
+	    		cout<<"    "<<vm_alloted_to_broker[i][j]<<"      |";	
+	    	}
 	    	cout<<"\n";
 	   }  
 }
@@ -63,20 +61,17 @@ int main() {
 	cout<<"price offered by cloud to brokers:\n\n         ";
 
 
-cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
-
-	for (int i = 0; i < b_count; ++i){
-			cout<<"--Broker"<<i+1;
+	for (int i = 0; i < c_count; ++i){
+			cout<<"|Broker "<<i+1<<"    ";
 	}
 	cout<<"\n";
 
 	for (int i = 0; i < c_count; ++i){
-			    	cout<<" Cloud "<<i<<" |";
+			    	cout<<"Cloud "<<i<<" |";
 			    	for (int j = 0; j <b_count; ++j)
 			    	{
-			    		//cout<<"    "<<price_matrix[i][j]<<"      |";
-			    		std::cout << std::setw(8);
-			    		cout<<price_matrix	[i][j];
+			    		cout<<"    "<<price_matrix	[i][j]<<"      |";
+			    		
 			    	}
 			    	cout<<"\n";
 	}
@@ -94,8 +89,8 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		}
 
 	cout<<"\ncloud supply::\n";
-	    for (int i = 0; i < c_count; ++i) {
-	    	cout<<"cloud "<<i+1<<" :"<<cloud_supply[i]<<"\n";
+	    for (int i = 0; i < b_count; ++i) {
+	    	cout<<"Broker "<<i+1<<" :"<<cloud_supply[i]<<"\n";
 	    }
 	    
 	float cloud_preference[c_count][b_count];
@@ -110,14 +105,14 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 	   
 
 	//creating cloud preferencr list    
-	for (int i = 0; i <c_count; ++i){
+	for (int i = 0; i <b_count; ++i){
 	    	/* code */
 	    	//sort(cloud_preference[i].begin(), cloud_preference[i].end()); 
 	    	 sort(cloud_preference[i], cloud_preference[i] + b_count);
 	    	 reverse(cloud_preference[i], cloud_preference[i] + b_count);
-	    	for (int j = 0; j < b_count; ++j)
+	    	for (int j = 0; j < c_count; ++j)
 	    	{
-	    	    for (int k = 0; k < b_count; ++k)
+	    	    for (int k = 0; k < c_count; ++k)
 	    	    {
 	    	    	if(cloud_preference[i][j]==c_price_matrix[i][k])
 	    	    		{
@@ -151,19 +146,16 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 	//allotment of vm to broker by cloud provider in each iteration
 	for(int i = 0; i <b_count+c_count; ++i){    
 		  // saving broker request in each iteration
-		  
-
-     		int all_Demand=0;
- 				for (int x = 0; x < b_count; ++x)
- 				{
- 					all_Demand+=pending_demand_br[x];
- 				}
-
-
+		  int no_request=0;
+		    int all_Demand=0;
+			 for (int x = 0; x < b_count; ++x)
+                    {
+                        all_Demand+=pending_demand_br[x];
+                    }   
 		  for (int cl = 0; cl < b_count; ++cl){
 		      		cout<<"\nbroker "<<cl+1<<" has : demand of  :"<<pending_demand_br[cl];
 	              if(cloud_supply[cl]>0){
-		      	
+		      		no_request++;
 		      			
 		      	 	int broker_id=cloud_preference[cl][cloud_current_pref[cl]];
 					//cout<<"cloudid:"<<broker_id+1<<" ";
@@ -172,7 +164,7 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		      		}
 		  }
 
-		  if(all_Demand==0)
+		  if(no_request==0 or all_Demand==0)
 		    	{
 		    		cout<<"\n\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********\n\nfinal allotment\n";
 
@@ -183,7 +175,7 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 
 
 			//sort the request list
-		  for (int i = 0; i < b_count; ++i){ 
+		  for (int i = 0; i < c_count; ++i){ 
 		      for(int j = 0; j < request_list[i].size(); ++j){
 
 		      	  int min=request_list[i][j]; //broker id
@@ -200,9 +192,9 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		      }   	
 		  }
 
-		  cout<<"\n\nRequest list sorted as per broker preference:\n ";
+		  cout<<"\n\nRequest list sorted as per cloud preference:\n ";
 
-		      for (int i = 0; i < b_count; ++i){ 
+		      for (int i = 0; i < c_count; ++i){ 
 		      	cout<<"\nBroker "<<i+1<<": ";
 		      	for (int j = 0; j < request_list[i].size(); ++j){
 		      		cout<<"C"<<request_list[i][j]+1<<" ";
@@ -215,14 +207,12 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		  for (int i = 0; i < b_count; ++i){
 		      		pending_demand_br[i]=broker_demand[i];
 
-		      		
-		      		// cout<<"\n\nbroker "<<i+1<<"  allotment\n";
+		      		 cout<<"\n\nboker "<<i+1<<"  allotment\n";
 
 	      		      
 		      		 
 
 		      		 //(taking back previous allotment and reassigning again)
-		      		
 		      		for(int m = 0; m < request_list[i].size(); ++m){
 		      			
 		      			
@@ -231,21 +221,20 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		      			vm_alloted_to_broker[i][request_list[i][m]]=0;
 		      		}	      			
 	                
-	               
 		      		for (int j = 0; j < request_list[i].size(); ++j){
 	                     
 		      		if(pending_demand_br[i]>0 ){
 		      			
 		      			int supply=cloud_supply[request_list[i][j]];
 		      			//cout<<"\npending demans for broker"<<i+1<<"is:"<<pending_demand_br[i];
-		      			//cout<<"\nC"<<request_list[i][j]+1<<" supply is :"<<supply<<"\n";
+		      			cout<<"\nC"<<request_list[i][j]+1<<" supply is :"<<supply<<"\n";
 		      			if(supply<pending_demand_br[i])
 			      		{
 		
 			      			pending_demand_br[i]-=supply;			      
 			      			cloud_supply[request_list[i][j]]=0;
 			      			vm_alloted_to_broker[i][request_list[i][j]]=supply;
-			      		//	cout<<"\n remianing request for broker is "<<i+1<<" is:"<<pending_demand_br[i];
+			      			cout<<"\n remianing request for broker is "<<i+1<<" is:"<<pending_demand_br[i];
 			      		}
 			      		else
 			      		{  
@@ -254,7 +243,7 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 				      			vm_alloted_to_broker[i][request_list[i][j]]=pending_demand_br[i];
 				      							      			
 				      			cloud_supply[request_list[i][j]]=supply-pending_demand_br[i];
-				      		//	cout<<"\n remianing request for broker "<<request_list[i][j]+1<<":0\n";
+				      			cout<<"\n remianing request for broker "<<request_list[i][j]+1<<":0\n";
 				      			pending_demand_br[i]=0;
 			      	    }
 		      		}
@@ -268,70 +257,12 @@ cout<<"b_count:"<<b_count<<"c_count:"<<c_count<<endl;
 		  }
 
 	      cout<<"\n vms alloted in "<<i+1<<" :iteration\n\n";
-	   	   show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
+	      show_vm_allotments(vm_alloted_to_broker,c_count,b_count,broker_demand);
 	      cout<<"cloud supply after "<<i+1<<" allotment:\n";
-		  for (int i = 0; i < c_count; ++i){
+		  for (int i = 0; i < b_count; ++i){
 					cout<<"  C"<<i+1<<":"<<cloud_supply[i];
 		  }
 	}
-
-	//utility calcution for cloud
-
-	//using broker prederence and vm allotment
-	int broker_utility[b_count];
-   // memset(broker_utility, 0, sizeof(broker_utility));
-   // cout<<"\n";
-   //    for (int i = 0; i < b_count; ++i)
-   //    {
-   //    	for (int j = 0; j < c_count; ++j)
-   //    	{
-   //    		auto itr = find(broker_preference[i].begin(),broker_preference[i].end() , j);
-   //    		int index = itr -broker_preference[i].begin();
-   //    		//cout<<j+1<<" broker "<<index+1<<" \n";
-   //    		int l=index+1;    //cloud rank in broker prefrence
-   //    		//  cout<<"\nutility"<<(c_count-l+1);
-   //    		// cout<<"  full:"<<(c_count-l+1)*vm_alloted_to_broker[i][j];
-   //    		broker_utility[i]+=(c_count-l+1)*vm_alloted_to_broker[i][j];
-
-   //    	}
-   //    	cout<<endl<<endl;
-   //    	/* code */
-   //    }
-
-      int cloud_utility[c_count];
-   memset(cloud_utility, 0, sizeof(cloud_utility));
-   cout<<"\n";
-      for (int i = 0; i < c_count; ++i)
-      {
-      	for (int j = 0; j < b_count; ++j)
-      	{
-      		auto itr = find(cloud_preference[i],cloud_preference[i]+c_count , j);
-      		int index = itr -cloud_preference[i];
-      		//cout<<j+1<<" broker "<<index+1<<" \n";
-      		int l=index+1;    //cloud rank in broker prefrence
-      		 cout<<"\nutility"<<(c_count-l+1);
-      		cout<<"  full:"<<(b_count-l+1)*vm_alloted_to_broker[j][i];
-      		cloud_utility[i]+=(b_count-l+1)*vm_alloted_to_broker[j][i];
-
-      	}
-      	cout<<endl<<endl;
-      	/* code */
-      }
-
-cout<<"broker utility\n";
-      for (int i = 0; i < b_count; ++i)
-      {
-      	cout<<"B"<<i<<":"<<broker_utility[i]<<"\n";
-      }
-cout<<"cloud utility\n" ;     
-      for (int i = 0; i < b_count; ++i)
-      {
-      	cout<<"C"<<i<<":"<<cloud_utility[i]<<"\n";
-      }
-
-      //utility calcution for broker
-
-
 
 	    return 0;
 }
