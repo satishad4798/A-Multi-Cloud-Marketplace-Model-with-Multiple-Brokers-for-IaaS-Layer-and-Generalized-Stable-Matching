@@ -30,9 +30,10 @@ int main() {
     std::vector<int> broker_demand;
 
     //''''''''''read input from file
-    std::ifstream in("input2.txt");
-    in>>b_count;
+    std::ifstream in("input.txt");
+  
     in>>c_count;
+      in>>b_count;
     
     vector<vector<float>> price_matrix(b_count);
 
@@ -140,13 +141,13 @@ int main() {
 		cloud_preference=transpose_price_matrix;
 		 c_price_matrix=transpose_price_matrix;
 
-	for (int i = 0; i <b_count; ++i){
+	for (int i = 0; i <c_count; ++i){
 	    	/* code */
 	    	sort(cloud_preference[i].begin(), cloud_preference[i].end()); 
 	    	reverse(cloud_preference[i].begin(), cloud_preference[i].end());
-	    	for (int j = 0; j < c_count; ++j)
+	    	for (int j = 0; j < b_count; ++j)
 	    	{
-	    	    for (int k = 0; k < c_count; ++k)
+	    	    for (int k = 0; k < b_count; ++k)
 	    	    {
 	    	    	if(cloud_preference[i][j]==c_price_matrix[i][k])
 	    	    		{
@@ -161,9 +162,9 @@ int main() {
 	// prining broker preference
 	cout<<"\ncloud preference based on price\n";
 
-	for (int i = 0; i < b_count; ++i){
+	for (int i = 0; i < c_count; ++i){
 		    	cout<<"Cloud"<<i+1<<" : ";
-		    	for (int j = 0; j <c_count; ++j){
+		    	for (int j = 0; j <b_count; ++j){
 		    		cout<<"B"<<cloud_preference[i][j]+1<<" ";
 		    	}
 		    	cout<<"\n";
@@ -304,6 +305,7 @@ int main() {
 		  
 
      		int all_Demand=0;
+     		int no_request=0;
  				for (int x = 0; x < b_count; ++x)
  				{
  					all_Demand+=pending_demand_br[x];
@@ -313,7 +315,7 @@ int main() {
 		  for (int cl = 0; cl < b_count; ++cl){
 		      		cout<<"\nbroker "<<cl+1<<" has : demand of  :"<<pending_demand_br[cl];
 	              if(cloud_supply[cl]>0){
-		      	
+		      		 no_request++;
 		      			
 		      	 	int broker_id=cloud_preference[cl][cloud_current_pref[cl]];
 					//cout<<"cloudid:"<<broker_id+1<<" ";
@@ -322,7 +324,7 @@ int main() {
 		      		}
 		  }
 
-		  if(all_Demand==0)
+		  if(all_Demand==0 or  no_request==0)
 		    	{
 		    		cout<<"\n\n******ALL BROKER DEMAND MET WITH STABLE ALLOTMENT********\n\nfinal allotment\n";
 
@@ -483,7 +485,7 @@ cout<<"---------------------\n";
       }
 cout<<"\n  Cloud  Utility\n" ;   
 cout<<"---------------------\n";  
-      for (int i = 0; i < b_count; ++i)
+      for (int i = 0; i < c_count; ++i)
       {
       	cout<<"  Cloud "<<i+1<<" : "<<cloud_utility[i]<<"\n";
       }
