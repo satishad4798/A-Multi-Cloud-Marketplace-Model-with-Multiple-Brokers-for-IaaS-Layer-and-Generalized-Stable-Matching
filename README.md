@@ -2,7 +2,7 @@
 
 # Directory content:
 
-	1. ava probelm for stable allotment of vm 
+	1. java probelm for stable allotment of vm 
 	2. c++ program  for the same
 	3. results directory -have screnshot of results
 	     -result-broker_propose.txt -shows flow of program execution when broker propose
