@@ -54,6 +54,7 @@ cloud 1: B3 B1 B2
 cloud 2: 
 cloud 3: B4 
 cloud 4: 
+
  vms alloted in 1 :iteration
 
           --Cloud 1--Cloud 2--Cloud 3--Cloud 4
