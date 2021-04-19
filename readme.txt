@@ -1,7 +1,6 @@
 
 
-
-1.Directory content:
+# Directory content:
 
 	1. ava probelm for stable allotment of vm 
 	2. c++ program  for the same
@@ -14,7 +13,7 @@
 
 
 
-2.How to run:
+# How to run:
 
     A.Run with using VS Code or eclipse application
 
@@ -27,14 +26,14 @@
 	    javac Stable_Matching.java
 	    java Stable_Matching
 
-3.Input to program:
+# Input to program:
 
      -user can use default values to run the code
      -or can give manual input
           -input format is given in input.txt        
 
 
-4.HOW TO RUN C++ program for stable matching:
+# HOW TO RUN C++ program for stable matching:
      open terminal
          g++ stable_allotment.cpp
          ./a.out
